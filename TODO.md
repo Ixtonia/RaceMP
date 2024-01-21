@@ -14,7 +14,7 @@
 - Add times to the raceboard
 
 ## Levels
-- Shorten prefab names in WCUSA
+- ✓ Shorten prefab names in WCUSA
 - Add inside barriers to Hirochi derby
 
 ## Server Side
