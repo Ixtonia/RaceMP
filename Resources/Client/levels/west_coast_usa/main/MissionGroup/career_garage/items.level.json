@@ -1,4 +1,4 @@
-{"name":"garageZones","class":"SimGroup","persistentId":"3024413e-e343-484b-ba48-42c862e2e2b9","__parent":"career_garage"}
+{"name":"garage_interactions","class":"SimGroup","persistentId":"3024413e-e343-484b-ba48-42c862e2e2b9","__parent":"career_garage"}
 {"name":"career_garage_exterior","class":"SimGroup","persistentId":"25465913-832a-4ab7-a766-2d3fba5cc2a1","__parent":"career_garage"}
 {"name":"career_garage_props","class":"SimGroup","persistentId":"fbfb23db-83b3-4b61-ab5a-3bcdfc9603e7","__parent":"career_garage"}
 {"name":"career_garage_parkingLines","class":"SimGroup","persistentId":"f4f3622a-17dc-45bc-9729-3d27f42010c8","__parent":"career_garage"}

@@ -1,0 +1,30 @@
+{"name":"Pits","class":"SimGroup","persistentId":"f173b736-e12a-4dba-bb16-f149d5774fcd","__parent":"Track3D"}
+{"name":"Tirewalls","class":"SimGroup","persistentId":"baf017ad-4708-4488-a127-9af3a11dbb3c","__parent":"Track3D"}
+{"name":"Fences","class":"SimGroup","persistentId":"8ba505e6-b30e-4755-af3b-6182dd258de7","__parent":"Track3D"}
+{"class":"TSStatic","persistentId":"5b3faca2-7e7b-4865-a847-40636e9bb8c8","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L008.DAE"}
+{"class":"TSStatic","persistentId":"77066c26-a6ba-47e2-9941-063cf4d1a2f3","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L007.DAE"}
+{"class":"TSStatic","persistentId":"9cc51fb1-ea55-4245-b416-cccd7ec204e2","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L006.DAE"}
+{"class":"TSStatic","persistentId":"1c6a1fdb-cdfb-479a-9993-61295896bba0","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L005.DAE"}
+{"class":"TSStatic","persistentId":"bf01acbe-28ad-4542-bb4e-16d49fbe8d8c","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L004.DAE"}
+{"class":"TSStatic","persistentId":"3832e227-3ccf-4d95-9853-7832439379d4","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L003.DAE"}
+{"class":"TSStatic","persistentId":"392c00b8-eb81-4474-abd4-a71903dd067c","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L002.DAE"}
+{"class":"TSStatic","persistentId":"de480646-adc7-4443-b352-2ee20b02ea55","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L001.DAE"}
+{"class":"TSStatic","persistentId":"5cecafec-65c8-4c75-8cc6-98412e48bb1e","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A011.DAE"}
+{"class":"TSStatic","persistentId":"b66c3ab2-352f-4f5f-bc72-a8ea2ef16a24","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A010.DAE"}
+{"class":"TSStatic","persistentId":"0f86372e-f442-4e64-8d41-66f06f6956bd","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A009.DAE"}
+{"class":"TSStatic","persistentId":"ac07ad3b-082c-40be-bd1c-402030fbdb1b","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A008.DAE"}
+{"class":"TSStatic","persistentId":"7889f286-2940-47e1-87c1-21b8d4deaa70","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A007.DAE"}
+{"class":"TSStatic","persistentId":"fa236143-4758-41c7-90ab-202089436ff6","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A006.DAE"}
+{"class":"TSStatic","persistentId":"c3676476-9868-4cc0-9195-770747270e3a","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A005.DAE"}
+{"class":"TSStatic","persistentId":"c9e07017-5ed9-42ba-b0fc-7aabb0a2fc0c","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A004.DAE"}
+{"class":"TSStatic","persistentId":"679a35ff-d372-4476-b55e-3c88c9d210ec","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A003.DAE"}
+{"class":"TSStatic","persistentId":"bb29f002-ba83-465c-b7fc-b284235fd493","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A002.DAE"}
+{"class":"TSStatic","persistentId":"fe0bb930-9130-4ef7-a199-06ba42a4a959","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_A001.DAE"}
+{"class":"TSStatic","persistentId":"f3ce040c-d9e0-4eb9-b3a8-1cabada7b02d","__parent":"Track3D","isRenderEnabled":false,"shapeName":"/levels/RoadAtlanta/art/Wall_L009.DAE"}
+{"class":"TSStatic","persistentId":"7909b33d-11df-4fce-9720-a4d32a47dfdd","__parent":"Track3D","position":[0,0,0.0199999996],"collisionType":"Visible Mesh Final","isRenderEnabled":false,"prebuildCollisionData":true,"shapeName":"/levels/RoadAtlanta/art/Curbs_t1.DAE"}
+{"class":"TSStatic","persistentId":"e839eff8-d23f-4d40-b14e-80fc1c042e3c","__parent":"Track3D","collisionType":"Visible Mesh Final","isRenderEnabled":false,"prebuildCollisionData":true,"shapeName":"/levels/RoadAtlanta/art/Curbs_t2.DAE"}
+{"class":"TSStatic","persistentId":"48fc4043-f7a8-4046-bf64-065f357923fd","__parent":"Track3D","collisionType":"Visible Mesh Final","isRenderEnabled":false,"prebuildCollisionData":true,"shapeName":"/levels/RoadAtlanta/art/Curbs_t4.DAE"}
+{"class":"TSStatic","persistentId":"7ebc4022-aff4-4003-a392-06b3eeeb6d39","__parent":"Track3D","collisionType":"Visible Mesh Final","curb_GW":"Curb_GW_mat","isRenderEnabled":false,"prebuildCollisionData":true,"shapeName":"/levels/RoadAtlanta/art/Curbs_t6.DAE"}
+{"class":"TSStatic","persistentId":"b59845a4-c4e9-44ed-baae-316a5b018b57","__parent":"Track3D","collisionType":"Visible Mesh Final","isRenderEnabled":false,"prebuildCollisionData":true,"shapeName":"/levels/RoadAtlanta/art/Curbs_t5.DAE"}
+{"class":"MeshRoad","persistentId":"310c7888-5847-4c44-853b-19becc88fc08","__parent":"Track3D","position":[98.0707016,942.564331,21.3999996],"bottomMaterial":"DefaultRoadMaterialOther","nodes":[[98.0707016,942.564331,21.3999996,0.200000003,0.330000013,0,0,1],[100.763809,945.109253,21.3952751,0.200000003,0.330000013,0,0,1],[102.373314,946.956116,21.3898735,0.200000003,0.330000013,0,0,1],[100.900452,949.400269,21.5253716,0.200000003,0.330000013,0,0,1],[98.6623154,950.629272,21.7176819,0.200000003,0.330000013,0,0,1],[96.1935883,948.53009,21.8206501,0.200000003,0.330000013,0,0,1],[92.0781479,944.492004,21.6960926,0.200000003,0.330000013,0,0,1],[89.2976456,941.578735,21.6100273,0.200000003,0.330000013,0,0,1],[90.2232132,938.847229,21.4245358,0.200000003,0.330000013,0,0,1],[92.8939514,937.722961,21.3767242,0.200000003,0.330000013,0,0,1],[98.0707321,942.555542,21.3587189,0.200000003,0.330000013,0,0,1]],"sideMaterial":"ROADLINEy","textureLength":10,"topMaterial":"ROADLINEy"}
+{"name":"Treewalls","class":"SimGroup","persistentId":"021c3ddc-0f9e-4dd8-b171-d68c4acc17eb","__parent":"Track3D"}

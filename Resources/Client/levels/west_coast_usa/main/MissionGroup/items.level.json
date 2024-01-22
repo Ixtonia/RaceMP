@@ -22,3 +22,12 @@
 {"name":"movie_studio","class":"SimGroup","persistentId":"9958b1ea-f6cf-42e9-b47d-32f61cbf7bbd","__parent":"MissionGroup"}
 {"name":"port","class":"SimGroup","persistentId":"71defa49-7edf-4b14-a3ad-18d1a3467cb8","__parent":"MissionGroup"}
 {"name":"gas_stations_decalroads","class":"SimGroup","persistentId":"37dd14ef-43e0-408e-9154-7b94d8c17833","__parent":"MissionGroup"}
+{"name":"PoliceStation","class":"SimGroup","persistentId":"55c2ffd1-1619-49ca-86d3-634a32d03af6","__parent":"MissionGroup"}
+{"name":"steel_factory","class":"SimGroup","persistentId":"a93d2eab-e901-4338-84c9-2c38fbb89727","__parent":"MissionGroup"}
+{"name":"island","class":"SimGroup","persistentId":"ce877d57-80e6-4196-8de0-661b89ab558c","__parent":"MissionGroup"}
+{"name":"island_dock","class":"SimGroup","persistentId":"90e37c86-d434-4d2d-a36e-1db953ced244","__parent":"MissionGroup"}
+{"name":"fuel_stations","class":"SimGroup","persistentId":"2176011d-fb09-4f2f-af52-976c31164e81","__parent":"MissionGroup"}
+{"name":"beach","class":"SimGroup","persistentId":"3c27cf3c-8978-4ee4-816a-c3b9d66d0200","__parent":"MissionGroup"}
+{"name":"dealerships","class":"SimGroup","persistentId":"5ea3f7e9-4120-42fe-90d4-78e44e910856","__parent":"MissionGroup"}
+{"name":"port_public_area","class":"SimGroup","persistentId":"9b7fa8bb-518d-4d01-8480-f6af8802872b","__parent":"MissionGroup"}
+{"name":"SimGroup_n","class":"SimGroup","persistentId":"350927ea-f45d-4c6a-8535-6b301ffa8af0","__parent":"MissionGroup"}

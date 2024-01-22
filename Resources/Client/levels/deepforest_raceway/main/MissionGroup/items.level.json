@@ -1,0 +1,10 @@
+{"name":"sky_and_sun","class":"SimGroup","persistentId":"bda7d311-db8c-4a85-ba20-b7eb0f20f4d2","__parent":"MissionGroup"}
+{"name":"CameraBookmarks","class":"SimGroup","persistentId":"cd869ba8-0a57-445d-b171-20066536e3a0","__parent":"MissionGroup"}
+{"name":"Water","class":"SimGroup","persistentId":"4560a9d7-26ea-4b6e-9418-c22df32eb9b6","__parent":"MissionGroup"}
+{"name":"PlayerDropPoints","class":"SimGroup","persistentId":"324fff19-c5f5-4b94-a1c8-f5b43c0c956a","__parent":"MissionGroup","enabled":"1"}
+{"name":"AIWaypointsGroup","class":"SimGroup","persistentId":"28822d24-8d10-43a4-ba72-e5973e1f8bfc","__parent":"MissionGroup"}
+{"name":"AIDecalWaypointsGroup","class":"SimGroup","persistentId":"86998ff7-805a-43ff-b77e-60abf7e512ff","__parent":"MissionGroup"}
+{"class":"TSStatic","persistentId":"6eac5fbd-423d-44d2-a513-02bac327814f","__parent":"MissionGroup","position":[-67.2230988,-54.4697914,125.081902],"dynamic":true,"meshCulling":true,"originSort":true,"shapeName":"/levels/deepforest_raceway/art/shapes/barriers/deepforest_raceway_barriers.dae","useInstanceRenderData":true}
+{"class":"TSStatic","persistentId":"b52bf2b6-c6c5-4bb2-8bbd-3719b101db54","__parent":"MissionGroup","position":[-67.2230988,-54.4697914,125.081902],"collisionType":"Visible Mesh Final","decalType":"Visible Mesh Final","dynamic":true,"meshCulling":true,"originSort":true,"shapeName":"/levels/deepforest_raceway/art/shapes/base/deepforest_raceway_base.dae","useInstanceRenderData":true}
+{"class":"TSStatic","persistentId":"21530115-a1c4-44d7-883a-8927ddf3d972","__parent":"MissionGroup","position":[-67.2230988,-54.4697914,125.081902],"collisionType":"None","decalType":"None","dynamic":true,"meshCulling":true,"originSort":true,"shapeName":"/levels/deepforest_raceway/art/shapes/nocollision/deepforest_raceway_nocollision.dae","useInstanceRenderData":true}
+{"name":"multiplayer_race","class":"Prefab","persistentId":"5d398a5b-daf8-4f31-90d4-d2d1850964fd","__parent":"MissionGroup","filename":"/levels/deepforest_raceway/multiplayer/multiplayer_race.prefab.json"}

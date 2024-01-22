@@ -1,0 +1,15 @@
+{"class":"TSStatic","persistentId":"d4d1200f-6730-440f-b297-519aba49aa4f","__parent":"island_dock","isRenderEnabled":false,"rotationMatrix":[0.99999994,0,0,0,0.99999994,0,0,0,0.999999881],"shapeName":"/levels/west_coast_usa/art/shapes/buildings/s_dock_plateau.dae","useInstanceRenderData":true}
+{"name":"dock_entrance","class":"SimGroup","persistentId":"9822fcde-a071-4f38-bc1f-e64945252e05","__parent":"island_dock"}
+{"name":"dock_storage_area_props","class":"SimGroup","persistentId":"1ab54d53-ba60-4d78-8c71-21031c42bbfb","__parent":"island_dock"}
+{"name":"dock_lightpoles","class":"SimGroup","persistentId":"1ddba50a-54ae-45ee-bc0e-4e6543282936","__parent":"island_dock"}
+{"name":"container_block_1","class":"SimGroup","persistentId":"dfdbaa7c-5314-4ea6-85a4-0093b426eca9","__parent":"island_dock"}
+{"name":"container_block_2","class":"SimGroup","persistentId":"724ec26c-3634-44a7-a67d-ab33da854a1f","__parent":"island_dock"}
+{"name":"container_block_3","class":"SimGroup","persistentId":"99912c1f-e554-4902-869f-937a6c4b22ba","__parent":"island_dock"}
+{"name":"container_block_4","class":"SimGroup","persistentId":"b38aa60a-1830-4c47-abf3-f83ff107bb56","__parent":"island_dock"}
+{"name":"container_block_5","class":"SimGroup","persistentId":"afee2827-8aa7-4a30-96c6-297123a7ac70","__parent":"island_dock"}
+{"name":"container_block_6","class":"SimGroup","persistentId":"7fb0407b-3ac3-4480-b95b-b7b0e9563d34","__parent":"island_dock"}
+{"name":"container_block_7","class":"SimGroup","persistentId":"dd1e94e8-6f85-41d2-9b85-eaf968412304","__parent":"island_dock"}
+{"name":"dock_props","class":"SimGroup","persistentId":"68afbc08-c9c9-4d55-994c-36ba5baaf5af","__parent":"island_dock"}
+{"name":"dock_barriers","class":"SimGroup","persistentId":"227fe375-3ec2-453c-9722-923d67e774d3","__parent":"island_dock"}
+{"name":"dock_structures","class":"SimGroup","persistentId":"2e340127-400c-41fe-babf-5faee416ad64","__parent":"island_dock"}
+{"name":"dock_decalroads","class":"SimGroup","persistentId":"f2cc7450-a2ed-43c6-9e39-87d463eefb0c","__parent":"island_dock"}
