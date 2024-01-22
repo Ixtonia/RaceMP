@@ -40,4 +40,6 @@ Install 7-Zip and add it's install folder to Path. [Here is a guide on Stack Ove
   14. Enter your modified map folder, make a "multiplayer" folder and copy your track prefab.json file into this. Your final folder should have a "main" folder, a "multiplayer" folder, and a main.decals.json folder. The [ks_spa folder](https://github.com/AbhiMayadam/RaceMP/tree/main/Resources/Client/levels/ks_spa) has the correct layout if you need an example.
   15. Run the compress.bat file and it will make a .zip that contains all of the server side code, the client side code, and the maps. Put this in your server following the installation instructions.
 
-  Thank You to Funky7Monkey for making the mod initially. If you want to go to their original Gitea repository, you can do so here. https://git.funky7monkey.moe/funky7monkey/RaceMP. Their Gitea is self hosted (I assume) and occasionally goes down so keep that in mind. My initial commit to this Github repository is the same source code so you can download that if you are so inclined. 
+  Thank You to Funky7Monkey for making the mod initially. If you want to go to their original Gitea repository, you can do so here. https://git.funky7monkey.moe/funky7monkey/RaceMP. Their Gitea is self hosted (I assume) and occasionally goes down so keep that in mind. My initial commit to this Github repository is the same source code so you can download that if you are so inclined.
+
+  Thank you to Lakota Lewulf for giving me their layouts for a bunch of tracks so I don't have to do as much work in making tracks.
