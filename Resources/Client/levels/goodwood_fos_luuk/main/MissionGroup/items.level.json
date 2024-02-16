@@ -1,0 +1,6 @@
+{"name":"sky_and_sun","class":"SimGroup","persistentId":"ffdeb5b2-bacb-4a13-8db2-8ca07a36aa2d","__parent":"MissionGroup"}
+{"name":"CameraBookmarks","class":"SimGroup","persistentId":"991f3a72-2d51-4cfd-b7ab-e63a19acaecf","__parent":"MissionGroup"}
+{"name":"PlayerDropPoints","class":"SimGroup","persistentId":"a91fa7c2-806f-423b-baf0-d1a4acbf4f44","__parent":"MissionGroup","enabled":"1"}
+{"name":"AIWaypointsGroup","class":"SimGroup","persistentId":"c3cd1331-c126-46c8-863e-001ac840c3cb","__parent":"MissionGroup"}
+{"name":"AIDecalWaypointsGroup","class":"SimGroup","persistentId":"4c8f9f85-bcb6-4557-a505-def42a1c526e","__parent":"MissionGroup"}
+{"class":"TSStatic","persistentId":"b116199f-edb1-4190-b369-3f5c6c488eb1","__parent":"MissionGroup","position":[0,0,200],"isRenderEnabled":false,"meshCulling":true,"shapeName":"/levels/goodwood_fos_luuk/art/shapes/imported/gwfos.dae","useInstanceRenderData":true}
