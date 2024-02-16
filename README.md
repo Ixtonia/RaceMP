@@ -3,7 +3,7 @@
 
 Uses BeamNGTriggers as checkpoints and racing bounderies
 
-Includes tracks from West Coast, USA, Automation Test Track, and Hirochi Raceway
+Includes tracks from West Coast, USA, Automation Test Track, Hirochi Raceway, and way more. 
 
 # Installation
 Download latest release `RaceMP.zip` in [Releases](https://github.com/AbhiMayadam/RaceMP/releases)
