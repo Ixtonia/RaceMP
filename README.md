@@ -22,7 +22,7 @@ Unzip `RaceMP.zip` into the root of your BeamMP server
 
 # Making a track in BeamNG Drive
 ### Prerequisites
-Clone this repository first with `git clone https://github.com/AbhiMayadam/RaceMP.git`
+Clone this repository first with `git clone https://github.com/AbhiMayadam/RaceMP.git`. 
 Install 7-Zip and add it's install folder to Path. [Here is a guide on Stack Overflow.](https://stackoverflow.com/questions/44272416/how-to-add-a-folder-to-path-environment-variable-in-windows-10-with-screensho)
   1. Opening World Editor
   2. Make a new group in Scene Tree.
@@ -30,9 +30,9 @@ Install 7-Zip and add it's install folder to Path. [Here is a guide on Stack Ove
   4. Move the imported prefab to the new group (mainly for organization's sake)
   5. Unpack the prefab and move the out of bounds, startstop, and lapsplit items out of the prefab to the folder you just made. (Again, for organization's sake so you don't overwrite your template.)
   6. Delete the old prefab.
-  7. Drag startStop to your start/finish line, or if you are doing a sprint race, put the start trigger at the start line, and the stop trigger at the finish line. Delete the one you aren't using.
-  8. Put outOfBounds markers across areas that you don't want people to run.
-  9. Put lapSplit markers wherever you want to record splits/sectors.
+  7. Drag startStop to your start/finish line, or if you are doing a sprint race, put the start trigger at the start line, and the stop trigger at the finish line. Delete the one you aren't using. (THIS IS MANDATORY)
+  8. Put outOfBounds markers across areas that you don't want people to run. (You can duplicate these, and these are not necessary)
+  9. Put lapSplit markers wherever you want to record splits/sectors. (You can duplicate these if you need more, just try to put them in order (like lapSplit1 goes before lapSplit 2 etc)
   10. Make the triggers as wide and as tall as necessary. I would recommend making the trigger wider than you'd expect to reduce the chances of the racers not being picked up by the triggers. 
   11. You can add other assets to the track like tire bundles, flags to denote splits etc. if you want it to be loaded alongside the race markers. I would recommend putting it in the group with all the markers.
   12. Highlight all the markers and every other race asset you used and pack into prefab. Name it something that is memorable and short. Save it to a folder (this starts out in your BeamNG AppData folder), and I recommend making a folder in this main level, and saving tracks in that. Call it "prefab_tracks" or something.
