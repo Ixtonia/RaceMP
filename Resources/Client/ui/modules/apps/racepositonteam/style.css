@@ -1,0 +1,30 @@
+#BalanceInit {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    font-family: Montserrat, sans-serif;
+    font-weight: 500;
+    text-align: center;
+}
+
+#BalanceInit > div {
+    flex: 1; /* Увеличиваем элементы равномерно по высоте */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid black;
+}
+
+#BalanceInit > div:last-child {
+    border-bottom: none; /* Убираем нижнюю границу у последнего элемента */
+}
+
+#BalanceInit span {
+    font-size: calc(1.5vw + 1.5vh); /* Адаптивный размер текста */
+    line-height: 1; /* Уменьшаем высоту строки для лучшего масштабирования */
+    white-space: nowrap; /* Текст не переносится на следующую строку */
+    overflow: hidden; /* Скрываем текст, если он вылезет за рамки */
+    text-overflow: ellipsis; /* Добавляем многоточие, если текст обрезан */
+}

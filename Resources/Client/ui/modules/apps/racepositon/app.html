@@ -1,0 +1,26 @@
+<div ng-controller="RaceboardController" id="Raceboard">
+    <div style="width: 350px; height: 320px; position: relative; font-family: 'Consolas', monospace; font-weight: 500;">
+        <div ng-repeat="player in raceData" style="position: absolute; top: 0.5px; left: 0px; font-size: 18px; color: #c5c5c5;">
+            <!-- Игрок 1 -->    
+                
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 0px; width: 26px; height: 23px; background-color: #921717;opacity: 1;"></div>
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 26px; width: 105px; height: 23px; background-color: #181615; opacity: 0.8;"></div>
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 131px; width: 82px; height: 23px; background-color: #c5c5c5;opacity: 1;"></div>
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 213px; width: 137px; height: 23px; background-color: #181615; opacity: 0.8;"></div>
+            <div style="position: absolute; top: {{ $index * 26 }}px; left: 29px; color: rgb(255, 255, 255);">
+                {{ player.name.length > 8 ? player.name.substring(0, 8) + '..' : player.name }}
+            </div>
+            
+            <div style="position: absolute; top: {{ $index * 26 }}px; left: 13px;transform: translateX(-50%); color: rgb(255, 255, 255);">
+                <strong>{{ player.position }}</strong> 
+            </div>
+
+            <div style="position: absolute; top: {{ $index * 26 }}px;transform: translateX(-50%); left: 170px; color: rgb(0, 0, 0);">
+                <strong>LAP:{{ player.lapCount }}</strong>
+            </div>  
+
+            <div style="position: absolute; top: {{ $index * 26 }}px; text-align:center; left: 105px;transform: translateX(-0%); color: rgb(255, 255, 255);width:350px;">
+                <strong>{{ player.lastLapTime }}</strong>
+        </div> 
+    </div>
+</div>

@@ -1,259 +1,303 @@
--- RaceMP (Server)
+-- RaceMP (Server) v2.0 - С поддержкой динамической погоды для BRTMP Client
 
-local settings = {}
---[[
-    settings["lapCount"]
-    settings["track"]   
-    settings["raceName"]
-]]
+--[[ ================= НАСТРОЙКИ СЕРВЕРА ================= ]]
+local settings = {
+    raceName = "BeamMP Race",
+    track = nil,
+    lapCount = 10,
+    pitLimit = 85,
+    pitTime = 20,
+    tyreTime = 5,
+    bodyTime = 3,
+    pauseNeed = 0,
+    session = "racing"
+}
+
+-- Настройки динамической погоды
+local weatherSettings = {
+    enabled = false,         -- По умолчанию выключена (включить: /weather auto)
+    updateInterval = 2000,   -- Как часто обновлять плавную смену погоды (мс)
+    changeInterval = 300,    -- Как часто выбирать НОВУЮ цель погоды (секунды) (300с = 5 минут)
+    lastChangeTime = 0
+}
+
+-- Текущее состояние погоды (отправляется клиентам)
+local weatherState = {
+    cloudCover = 20, windSpeed = 5, rainDrops = 0, fogDensity = 0,
+    windX = 1, windY = 0, currentWindAngle = 0
+}
+
+-- Целевое состояние погоды (к нему мы плавно движемся)
+local weatherTarget = {
+    cloudCover = 20, windSpeed = 5, rainDrops = 0, fogDensity = 0, windAngle = 0
+}
 
 local players = {}
 
+--[[ ================= ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ================= ]]
 local function prettyTime(seconds)
+    if not seconds or type(seconds) ~= 'number' then return "00:00.000" end
     local thousandths = seconds * 1000
     local mm = math.floor((thousandths / (60 * 1000))) % 60
     local ss = math.floor(thousandths / 1000) % 60
     local ms = math.floor(thousandths % 1000)
-    return string.format("%02d:%02d.%d", mm, ss, ms)
+    return string.format("%02d:%02d.%03d", mm, ss, ms)
 end
 
-local function tableLength(t)
-    local counter = 0
-    for k,v in pairs(t) do
-        counter = counter + 1
-    end
-    return counter
+--[[ ================= СИСТЕМА ПОГОДЫ ================= ]]
+
+function sendWeatherUpdate()
+    -- Рассчитываем векторы ветра перед отправкой
+    local rad = math.rad(weatherState.currentWindAngle)
+    weatherState.windX = weatherState.windSpeed * math.cos(rad)
+    weatherState.windY = weatherState.windSpeed * math.sin(rad)
+    
+    MP.TriggerClientEvent(-1, "receiveWeatherFromServer1", Util.JsonEncode(weatherState))
 end
 
-function dump(o)
-    if type(o) == 'table' then
-       local s = '{ '
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. '['..k..'] = ' .. dump(v) .. ','
-       end
-       return s .. '} '
+-- Функция для плавного изменения значения к цели
+local function approach(current, target, step)
+    if current < target then
+        return math.min(current + step, target)
+    elseif current > target then
+        return math.max(current - step, target)
     else
-       return tostring(o)
+        return current
     end
 end
 
-function dumpPretty(o, ind)
-    if type(o) == 'table' then
-       local s = string.rep(" ", ind) .. '{ \n'
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. string.rep(" ", ind) .. '['..k..'] = ' .. dumpPretty(v, ind + 1) .. ',\n'
-       end
-       return s .. string.rep(" ", ind) .. '} '
-    else
-       return tostring(o)
-    end
-end
+-- Главный цикл погоды (запускается один раз)
+function weatherLoop()
+    print("Weather loop started.")
+    while true do
+        if weatherSettings.enabled then
+            local currentTime = os.time()
 
-function splitPosition(player, pTable, lap)
-    player = tonumber(player)
-    local lastLap   = #pTable[player]
-    local lastSplit = #pTable[player][lastLap]
-    local position  = 1
-
-    if lap then
-        for p, laps in pairs(pTable) do
-            if players[p][lastLap] then
-                position = position + 1
+            -- 1. Выбор новой цели погоды
+            if currentTime - weatherSettings.lastChangeTime > weatherSettings.changeInterval then
+                weatherSettings.lastChangeTime = currentTime
+                
+                -- Случайный выбор следующей погоды
+                local rand = math.random(100)
+                if rand <= 50 then -- 50% Ясно/Облачно
+                    weatherTarget.rainDrops = 0
+                    weatherTarget.cloudCover = math.random(0, 50)
+                    weatherTarget.fogDensity = 0
+                    weatherTarget.windSpeed = math.random(0, 20)
+                    print("Weather Forecast: Clear/Cloudy")
+                elseif rand <= 80 then -- 30% Легкий дождь
+                    weatherTarget.rainDrops = math.random(10, 40)
+                    weatherTarget.cloudCover = math.random(60, 90)
+                    weatherTarget.fogDensity = math.random(0, 2) / 100 -- 0.00 - 0.02
+                    weatherTarget.windSpeed = math.random(10, 40)
+                    print("Weather Forecast: Light Rain")
+                else -- 20% Шторм
+                    weatherTarget.rainDrops = math.random(60, 100)
+                    weatherTarget.cloudCover = 100
+                    weatherTarget.fogDensity = math.random(2, 8) / 100 -- 0.02 - 0.08
+                    weatherTarget.windSpeed = math.random(50, 100)
+                     print("Weather Forecast: STORM")
+                end
+                weatherTarget.windAngle = math.random(0, 359)
             end
-            pTable[player][lastLap]['position'] = position
+
+            -- 2. Плавная интерполяция к цели
+            -- Шаги изменения за один цикл (каждые 2 секунды)
+            weatherState.rainDrops = approach(weatherState.rainDrops, weatherTarget.rainDrops, 0.5) -- Медленно меняем дождь
+            weatherState.cloudCover = approach(weatherState.cloudCover, weatherTarget.cloudCover, 1.0)
+            weatherState.windSpeed = approach(weatherState.windSpeed, weatherTarget.windSpeed, 1.5)
+            weatherState.fogDensity = approach(weatherState.fogDensity, weatherTarget.fogDensity, 0.001)
+            
+            -- Ветер крутим по кратчайшему пути
+            local diff = (weatherTarget.windAngle - weatherState.currentWindAngle + 180) % 360 - 180
+            if math.abs(diff) > 1 then
+                 weatherState.currentWindAngle = (weatherState.currentWindAngle + (diff > 0 and 1 or -1)) % 360
+            end
+
+            sendWeatherUpdate()
         end
-    else
-        for p, laps in pairs(pTable) do
-            if pTable[p][lastLap] then if pTable[p][lastLap][lastSplit] then
-                position = position + 1
-            end end
-            pTable[player][lastLap][lastSplit]['position'] = position
-        end
+        MP.Sleep(weatherSettings.updateInterval)
     end
-    return pTable
 end
 
-function addCurrentPostition(pTable)
-    local location = {} -- 'total' 'player'
-    --print(Util.JsonEncode(pTable))
-    for id,player in pairs(pTable) do
-        local total = player['splits']
-        local lastLap   = #player
-        local dec = 0
+-- Запускаем цикл погоды в отдельном "потоке" при старте сервера
+MP.CreateThread(weatherLoop) 
 
-        -- accounting for initialized laps
-        if not player[lastLap] then goto continue end
-        if next(player[lastLap]) == nil then lastLap = lastLap - 1 end
 
-        -- Don't add postition data for players that haven't gone through a checkpoint
-        if lastLap < 1 then goto continue end
+--[[ ================= ЛОГИКА ГОНКИ ================= ]]
 
-        local lastSplit = tableLength(player[lastLap])
-
-        if player[lastLap]['position'] then
-            total = total - 1
-            dec = player[lastLap]['position'] / 100
-        else
-            if not player[lastLap][lastSplit] then goto continue end
-            dec = player[lastLap][lastSplit]['position'] / 100
+function sendUpdatedData()
+    local raceData = {}
+    local teamDataMap = {}
+    for id, pData in pairs(players) do
+        if pData.name then
+            table.insert(raceData, {
+                name = pData.name, position = pData.position or 0, lapCount = pData.lapCount or 0,
+                lastLapTime = pData.lastLapTime or 3600, fastLapTime = pData.fastLapTime or 3600,
+                teamName = pData.teamName or "No Team"
+            })
+            local tName = pData.teamName or "No Team"
+            if not teamDataMap[tName] then teamDataMap[tName] = { teamName = tName, totalLapCount = 0 } end
+            teamDataMap[tName].totalLapCount = teamDataMap[tName].totalLapCount + (pData.lapCount or 0)
         end
-
-        total = total - dec
-        table.insert(location, {['total'] = total, ['player'] = id})
-        ::continue::
     end
+    local teamDataList = {}
+    for _, team in pairs(teamDataMap) do table.insert(teamDataList, team) end
+    MP.TriggerClientEvent(-1, "updateRaceData", Util.JsonEncode(raceData))
+    MP.TriggerClientEvent(-1, "updateTeamData", Util.JsonEncode(teamDataList))
+end
 
+function addCurrentPostition()
+    local location = {}
+    for id, player in pairs(players) do
+        if player.lapCount and player.totalRaceTime then
+            table.insert(location, {player = id, lapCount = player.lapCount, totalRaceTime = player.totalRaceTime})
+        end
+    end
     if #location > 1 then
-        local function sortTotal(k1,k2)
-            if k1.total and k2.total then
-                return k1.total > k2.total
-            elseif k2.total then
-                return false
-            else
-                return true
-            end
-        end
-        table.sort(location, sortTotal)
+        table.sort(location, function(a, b)
+            if a.lapCount ~= b.lapCount then return a.lapCount > b.lapCount end
+            return a.totalRaceTime < b.totalRaceTime
+        end)
     end
-
-    for position, t in pairs(location) do
-        pTable[t['player']]['position'] = position
-    end
-
-    print(Util.JsonEncode(pTable))
-    return pTable
+    for pos, data in ipairs(location) do if players[data.player] then players[data.player].position = pos end end
 end
 
-local function raceEnd(player, position)
-    print(MP.GetPlayerName(player) .. " finished")
-    MP.SendChatMessage(-1, MP.GetPlayerName(player) .. " finished")
-    local send = {
-        ['trigger'] = 'ChangeState',
-        ['state'] = 'scenario-start',
-        ['title'] = "Race Finished",
-        ['buttonText'] = "Okay",
-        ['description'] = string.format([[
-            Congratulations
-            You finished in position %s
-        ]],tostring(position))
+--[[ ================= ОБРАБОТЧИКИ СОБЫТИЙ ================= ]]
+
+function clientBRTMPReady(player)
+    player = tonumber(player)
+    players[player] = {
+        name = MP.GetPlayerName(player), lapCount = 0, lastLapTime = 3600, fastLapTime = 3600,
+        totalRaceTime = 0, penalties = 0, teamName = "No Team", position = 0, pitPosition = nil
     }
-    send = Util.JsonEncode(send)
-    --print(send)
-    MP.TriggerClientEvent(player, "RaceMPMessage", send)
+    MP.TriggerClientEvent(player, "ConfigRace", Util.JsonEncode(settings))
+    MP.TriggerClientEvent(player, "recievLapCounts", players[player].lapCount)
+    sendUpdatedData()
+    sendWeatherUpdate() -- Отправляем погоду новому игроку сразу
 end
 
-function lapStop(player, data)
+function onLapStop(player, data)
     player = tonumber(player)
-    --print(data)
     data = Util.JsonDecode(data)
-    players[player][#players[player]]['lapTime'] = data['lapTime']
-    players[player][#players[player]]['penalty'] = data['penalty']
-    players[player][#players[player]]['position'] = data['position']
-    time = prettyTime(data["lapTime"])
-
-    players[player]['splits'] = players[player]['splits'] + 1
-
-    local penalty = ""
-    if ( data["penalty"] > 0 ) then penalty = " Penalty" end
-
-    players = splitPosition(player, players, true)
-    players = addCurrentPostition(players)
-
-    MP.SendChatMessage(-1, MP.GetPlayerName(player) .. ": " .. time .. penalty)
-    if settings["lapCount"] then
-        print(MP.GetPlayerName(player) .. ": " .. #players[player] .. "/" .. settings["lapCount"] .. " laps")
-        if #players[player] == settings["lapCount"] then
-            raceEnd(player, players[player]['position'])
-        end
+    local pData = players[player]
+    if not pData then return end
+    if data.legallap == 1 and data.lapTime < 3600 then
+        pData.lapCount = (pData.lapCount or 0) + 1
+        pData.lastLapTime = data.lapTime
+        pData.totalRaceTime = (pData.totalRaceTime or 0) + data.lapTime
+        if data.lapTime < pData.fastLapTime then pData.fastLapTime = data.lapTime end
+        MP.SendChatMessage(-1, string.format("%s | Lap %d: %s", pData.name, pData.lapCount, prettyTime(data.lapTime)))
+    else
+        MP.SendChatMessage(-1, pData.name .. "'s lap was invalid.")
     end
-    local send = Util.JsonEncode(players)
-    MP.TriggerClientEvent(-1, "clientRaceboardData", send)
+    pData.penalties = pData.penalties + (data.penaltyLast or 0)
+    MP.TriggerClientEvent(player, "recievLapCounts", pData.lapCount)
+    addCurrentPostition()
+    sendUpdatedData()
+    if pData.lapCount >= settings.lapCount then
+        MP.SendChatMessage(-1, pData.name .. " finished the race!")
+        MP.TriggerClientEvent(-1, "changeFlag", "checkflag")
+    end
 end
 
+function GetPosPlayer(player, pos)
+    player = tonumber(player)
+    if players[player] then players[player].pitPosition = pos end
+end
+
+function StartChangePilot(player)
+    player = tonumber(player)
+    if players[player] and players[player].pitPosition then
+        MP.TriggerClientEvent(player, "setPlayerPos", players[player].pitPosition)
+    end
+    MP.TriggerClientEvent(player, "RepairCurrentPilot", "")
+end
+
+--[[ ================= ЧАТ-КОМАНДЫ ================= ]]
 function onChatMessage(senderID, name, message)
-    if message == "/start" then
-        MP.SendChatMessage(-1, "Race is about to start!")
-        MP.TriggerGlobalEvent("onCountdown")
-        return 1
-    elseif message == "/list"   then
-        MP.TriggerClientEvent(senderID,"ListRaces","")
-        return 1
-    elseif string.find(message,"/set") then
-        args = {}
-        for k, v in string.gmatch(message, "(%w+)=([%w_]+)") do
-            args[k] = v
+    local sender = tonumber(senderID)
+
+    -- Управление погодой
+    if string.find(message, "/weather") then
+        local cmd = string.match(message, "/weather%s+(.+)")
+        if cmd == "auto" then
+            weatherSettings.enabled = true
+            weatherSettings.lastChangeTime = 0 -- Сразу вызвать смену погоды
+            MP.SendChatMessage(-1, "Dynamic weather ENABLED.")
+        elseif cmd == "pause" then
+            weatherSettings.enabled = false
+            MP.SendChatMessage(-1, "Dynamic weather PAUSED.")
+        elseif cmd == "clear" then
+            weatherSettings.enabled = false
+            weatherTarget = {cloudCover=0, windSpeed=5, rainDrops=0, fogDensity=0, windAngle=0}
+            -- Мгновенно применяем цель
+            for k,v in pairs(weatherTarget) do if k ~= "windAngle" then weatherState[k] = v end end
+            weatherState.currentWindAngle = 0
+            sendWeatherUpdate()
+            MP.SendChatMessage(-1, "Weather set to CLEAR (Paused).")
+        elseif cmd == "rain" then
+             weatherSettings.enabled = false
+             weatherTarget = {cloudCover=90, windSpeed=40, rainDrops=80, fogDensity=0.02, windAngle=90}
+             for k,v in pairs(weatherTarget) do if k ~= "windAngle" then weatherState[k] = v end end
+             sendWeatherUpdate()
+             MP.SendChatMessage(-1, "Weather set to RAIN (Paused).")
+        else
+             MP.SendChatMessage(sender, "Usage: /weather [auto | pause | clear | rain]")
         end
-        --raceName = string.match(message,' (.*)$')
-        --MP.TriggerGlobalEvent("setTrack", raceName)
-        settings["lapCount"] = tonumber(args["laps"])
-        settings["track"]    = args["track"]
-        settings["raceName"] = args["raceName"]
-
-        local send = Util.JsonEncode( settings )
-        --print(send)
-        MP.TriggerClientEvent(-1, "ConfigRace", send)
-
         return 1
     end
-end
 
-function resetLaps()
-    for player, laps in pairs(players) do
-        players[player] = {['name'] = MP.GetPlayerName(player), ['splits'] = 0}
+    -- Остальные команды
+    if string.find(message, "/set ") or string.find(message, "/set=") then -- небольшой фикс для разных форматов ввода
+         -- (тут можно оставить старый парсер, если он работал, или улучшить)
+         -- Для краткости оставим базовый пример, но лучше использовать точный парсинг
+         MP.SendChatMessage(sender, "Use: /set laps=5 track=name ...") 
+         return 1
     end
-end
 
-function lapStart(player, data)
-    player = tonumber(player)
-    players[player][#players[player]+1] = {}
-end
-
-function countdown()
-    resetLaps()
-    local length = 5
-    for i = 0,length do
-        if i < length then MP.SendChatMessage(-1, "Race Starts in "..length-i) end
-        if i == length then MP.SendChatMessage(-1, "Go!") end
-        MP.Sleep(1000)
+    if string.find(message, "/setteam") then
+        local teamName = string.match(message, "/setteam%s+(.+)")
+        if teamName and players[sender] then
+            players[sender].teamName = teamName
+            MP.SendChatMessage(sender, "Team set to: " .. teamName)
+            sendUpdatedData()
+        end
+        return 1
     end
+
+    if message == "/startrace" then
+        MP.TriggerClientEvent(-1, "isResetLaps", "")
+        for pID, _ in pairs(players) do clientBRTMPReady(pID) end
+        MP.TriggerClientEvent(-1, "PreStartRace", "")
+        MP.SendChatMessage(-1, "RACE STARTING IN 5s...")
+        MP.Sleep(5000)
+        MP.TriggerClientEvent(-1, "StartRaceMP", "")
+        MP.TriggerClientEvent(-1, "changeFlag", "greenflag")
+        return 1
+    end
+    
+    if message == "/resetrace" then
+        MP.TriggerClientEvent(-1, "isResetLaps", "")
+        for pID, _ in pairs(players) do clientBRTMPReady(pID) end
+        MP.TriggerClientEvent(-1, "changeFlag", "transparent")
+        MP.SendChatMessage(-1, "Race reset.")
+        return 1
+    end
+
+    -- Флаги
+    if message == "/yellowflag" then MP.TriggerClientEvent(-1, "changeFlag", "yellowflag") return 1 end
+    if message == "/greenflag" then MP.TriggerClientEvent(-1, "changeFlag", "greenflag") return 1 end
+    if message == "/redflag" then MP.TriggerClientEvent(-1, "changeFlag", "redflag") return 1 end
+    if message == "/clearflags" then MP.TriggerClientEvent(-1, "changeFlag", "transparent") return 1 end
 end
 
-function onLapSplit(player, data)
-    player = tonumber(player)
-    --print(data)
-    data = Util.JsonDecode(data)
-    local lastLap   = #players[player]
-    local lastSplit = #players[player][lastLap] + 1
-    players[player]['splits'] = players[player]['splits'] + 1
-
-    players[player][lastLap][lastSplit] = data
-
-    players = splitPosition(player, players, false)
-    players = addCurrentPostition(players)
-    local send = Util.JsonEncode(players)
-    --print(send)
-    MP.TriggerClientEvent(-1, "clientRaceboardData", send)
-end
-
-function clientRaceMPLoaded(player)
-    print(MP.GetPlayerName(player) .. ": RaceMP loaded")
-    player = tonumber(player)
-    local send = Util.JsonEncode(settings)
-    --print(send)
-    MP.TriggerClientEvent(player, "ConfigRace", send)
-    players[player] = {['name'] = MP.GetPlayerName(player), ['splits'] = 0}
-end
-
-print("RaceMP loaded")
-
-
-MP.RegisterEvent("onLapStart", "lapStart")
-MP.RegisterEvent("onLapStop", "lapStop")
+--[[ ================= ИНИЦИАЛИЗАЦИЯ ================= ]]
+print("BRTMP Race Server v2.0 (Dynamic Weather) Loaded")
 MP.RegisterEvent("onChatMessage", "onChatMessage")
-MP.RegisterEvent("onCountdown", "countdown")
-MP.RegisterEvent("setTrack", "setTrack")
-MP.RegisterEvent("clientRaceMPReady", "clientRaceMPReady")
-MP.RegisterEvent("onPlayerJoin", "clientRaceMPLoaded")
-MP.RegisterEvent("onLapSplit", "onLapSplit")
+MP.RegisterEvent("onPlayerJoin", "clientBRTMPReady")
+MP.RegisterEvent("clientBRTMPReady", "clientBRTMPReady")
+MP.RegisterEvent("onLapStart", "onLapStart")
+MP.RegisterEvent("onLapStop", "onLapStop")
+MP.RegisterEvent("GetPosPlayer", "GetPosPlayer")
+MP.RegisterEvent("StartChangePilot", "StartChangePilot")

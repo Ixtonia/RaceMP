@@ -1,54 +1,52 @@
 # TODO 1.2.0
-- Finish point to point and test
-- Write some more documentation (how to use, add new track data, etc)
-- ✓ Fix the vscode task, BeamNG does not load mods packed by powershell properly
-    - Requires 7zip in path
-- ✓ Changed compression stuff for release
+- Доработать от точки к точке и протестировать
+- Написать еще немного документации (как использовать, добавить новые данные о треке и т.д.)
+- ✓ Исправить задачу vscode, BeamNG неправильно загружает моды, упакованные powershell
+    - Требуется 7zip в path
+- ✓ Изменены параметры сжатия для релиза
 
-## Client side
-- possibly change splits format (to mirror server side)
+## На стороне клиента
+- возможно, изменен формат разделений (для зеркального отображения на стороне сервера)
+
+## Графический интерфейс
+- ✓ исправлено позиционирование (снова исправлено)
+- Добавлен счетчик кругов в графическом интерфейсе
+- Добавлено время на гоночной доске
+
+## Уровни
+- ✓ Сократить названия префабов в WCUSA
+- Добавить внутренние барьеры в Hirochi derby
+
+## Серверная часть
+- ✓ (изменена функциональность) изменены названия индексации позиций на кругах/разделениях
+    - позиция на разделении / круге теперь является позицией игрока на данный момент
+
+# Переписать (2.0?)
+- Использовать core_hotlapping / hotlapping.lua для добавления контрольных точек пользовательского интерфейса BeamNG.
+
+# ПОЗЖЕ
+- Добавим изображения графического интерфейса в README.md
+- Приведем код в соответствие
+- Какие-то разрешения
+
+
+## Что-то для настройки гонки
+- Возможность переключения столкновений: settings.setValue('disableDynamicCollision', true)
+- Настройка названия гонки
+- Режим квалификации (сортировка гоночной таблицы по времени прохождения круга)
+- Режим ралли (сортировка гоночной таблицы по времени прохождения круга)
+
+## На стороне клиента
+- добавить отдельный файл утилит
 
 ## GUI
-- ✓ fix positioning (fixed again)
-- Add GUI lap counter
-- Add times to the raceboard
+- Изменить интерфейс чата на imgui, возможно, с помощью средства выбора файлов
 
-## Levels
-- ✓ Shorten prefab names in WCUSA
-- Add inside barriers to Hirochi derby
+## На стороне сервера
 
-## Server Side
-- ✓ (changed fucntionality) change names of position indexing in laps/splits
-    - position in a split/lap is now the position of the player at that point
-
-# Rewrite (2.0?)
-- Use core_hotlapping / hotlapping.lua to add BeamNG UI checkpoints.
-
-# LATER
-- Add images of GUI to README.md
-- Make code consistent
-- Permissions of some kind
-
-
-## Race config stuff
-- Possible to toggleable collisions: settings.setValue('disableDynamicCollision', true)
-- Race name configuration
-- Qualifying mode (sort raceboard by lap time)
-- Rally mode (sort raceboard by split time)
-
-## Client side
-- add separate utilities file
-
-## GUI
-- Change chat based UI to imgui, possibly with file picker
-
-## Server Side
-
-
-# INVESTIGATE
-- Moving to be a CobaltEssentials extension
-- Investigate pretty names for prefabs
-- Solid barriers in prefabs
-- Investigate check onWaypoint and onBeamNGWaypoint
-- Toggleable collisions: settings.setValue('disableDynamicCollision', true)
-- Difference in time between server and client side
+# ИССЛЕДОВАТЬ
+- Изучить красивые названия для префабов
+- Надежные барьеры в префабах
+- Исследовать, проверять onWaypoint и onBeamNGWaypoint
+- Настраиваемые коллизии: settings.setValue('disableDynamicCollision', true)
+- Разница во времени между серверной и клиентской сторонами

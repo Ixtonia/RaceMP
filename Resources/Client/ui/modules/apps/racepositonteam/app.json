@@ -1,0 +1,20 @@
+{
+  "domElement": "<racepositonteam></racepositonteam>",
+  "name": "_RACE Список команд",
+  "types": [
+    "ui.apps.categories.racetime"
+  ],
+  "css": {
+    "left": "50%",
+    "top": "40px",
+    "min-width": "180px",
+    "width": "180px",
+    "height": "240px",
+    "resize": "both",
+    "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racepositonteam"
+}

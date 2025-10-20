@@ -1,0 +1,19 @@
+{
+  "domElement": "<racesplit1></racesplit1>",
+  "name": "_RACE Время сектора",
+  "types": [
+      "ui.apps.categories.racetime"
+  ],
+  "css": {
+      "left": "50%",      
+      "top": "40px",      
+      "width": "300px",
+      "height": "75px",
+      "resize": "both",   
+      "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racesplit1"
+}

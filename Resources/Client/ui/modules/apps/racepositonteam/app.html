@@ -1,0 +1,16 @@
+<div ng-controller="RaceboardControllerTeam" id="RaceboardControllerTeam">
+    <div style="width: 350px; height: 320px; position: relative; font-family: 'Consolas', monospace; font-weight: 500;">
+
+        <div ng-repeat="team in teamData" style="position: absolute; top: 0.5px; left: 0px; font-size: 18px; color: rgb(255, 255, 255);">
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 0px; width: 26px; height: 23px; background-color: #302e2d;opacity: 0.9;"></div>
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 26px; width: 155px; height: 23px; background-color: #181615; opacity: 0.7;"></div>
+            <div style="position: absolute; top: {{ $index * 26 }}px; left: 29px; width:181px; color: rgb(255, 255, 255);">
+                {{ team.teamName.length > 13 ? team.teamName.substring(0, 13) + '..' : team.teamName }}
+            </div>
+            
+            <!-- Позиция игрока -->
+            <div style="position: absolute; top: {{ $index * 26 }}px; left: 13px;transform: translateX(-50%); color: rgb(255, 255, 255);">
+                <strong>{{ team.totalLapCount }}</strong> 
+            </div>
+    </div>
+</div>

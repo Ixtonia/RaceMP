@@ -1,0 +1,19 @@
+{
+  "domElement": "<racetable></racetable>",
+  "name": "_RACE Информация о пит-стопе",
+  "types": [
+      "ui.apps.categories.racetime"
+  ],
+  "css": {
+      "left": "50%",      
+      "top": "40px",      
+      "width": "370px",
+      "height": "80px",  
+      "resize": "both",   
+      "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racetable"
+}

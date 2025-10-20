@@ -1,0 +1,19 @@
+{
+  "domElement": "<racepos></racepos>",
+  "name": "_RACE Количество кругов",
+  "types": [
+    "ui.apps.categories.racetime"
+  ],
+  "css": {
+    "left": "50%",
+    "top": "40px",
+    "width": "200px",
+    "height": "80px",
+    "resize": "both",
+    "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racepos"
+}

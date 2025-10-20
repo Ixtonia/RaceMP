@@ -1,0 +1,21 @@
+{
+  "domElement": "<racetimebrt></racetimebrt>",
+  "name": "_RACE Время круга",
+  "types": [
+      "ui.apps.categories.racetime"
+  ],
+  "css": {
+      "left": "50%",      
+      "top": "40px",      
+      "width": "520px",
+      "min-width": "520px",
+      "height": "170px",
+      "min-height": "170px",  
+      "resize": "both",   
+      "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racetimebrt"
+}

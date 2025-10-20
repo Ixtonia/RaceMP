@@ -1,16 +1,27 @@
--- Raceboard (Client)
-
+-- Raceboard BeamMP Racing Team 2.9 (Client) by MEKCEP
 local M = {}
 
-local raceName = "Raceboard"
-local logTag = "Raceboard"
+local checkboxes = {
+    body  = true,  -- Инициализация состояния для "Кузов"
+    fuel  = true,  -- Инициализация состояния для "Топливо"
+    tires = true, -- Инициализация состояния для "Шины"
+}
+
+local pitstop = "PitStop"
+local logTag = "GUI"
+local sortedRaceDataJson
+local sortedTeamDataJson
+local sortedRaceDataFastJson
+
+
 
 M.dependencies = {"ui_imgui"}
 local gui_module = require("ge/extensions/editor/api/gui")
 local gui = {setupEditorGuiTheme = nop}
-local im = ui_imgui
-local windowOpen = im.BoolPtr(true)
-local ffi = require('ffi')
+local imgui = ui_imgui
+local sensor = 100
+local FuelPer = 100
+local FuelNow
 
 local statisitcs = {} -- name(str) : {name=str, position=number, number=lap (time and splits)}
 
@@ -54,38 +65,21 @@ local function configRace(data)
     end
 
     data = jsonDecode(data)
-    raceName = data['raceName'] or raceName
 end
 
---[[
-statisitcs = { -- For test data
-    [2]={
-        ['name'] = "Funky",
-        ['position'] = 2,
-        [1] = {["lapTime"] = 77.81306498835,
-              {['lapSplit'] = 15.250627835563},
-              {['lapSplit'] = 43.966324183482},
-              {['lapSplit'] = 67.592286749622},
-              ['penalty'] = nil},
-    },
-    [1]={
-        ['name'] = "Sarah",
-        ['position'] = 1,
-        [1] = {["lapTime"] = 66, ["splits"] = nil, ['penalty'] = nil},
-        [2] = {["lapTime"] = 86.005629550636, ["splits"] = {
-            {['lapSplit'] = 23.996093830061},
-            {['lapSplit'] = 52.719295139417},
-            {['lapSplit'] = 76.401690133774},
-        }, ['penalty'] = 2},
-    }
-}
-]]
+
 local function prettyTime(seconds)
     local thousandths = seconds * 1000
+    local hh = math.floor(thousandths / (60 * 60 * 1000)) % 24
     local mm = math.floor((thousandths / (60 * 1000))) % 60
     local ss = math.floor(thousandths / 1000) % 60
     local ms = math.floor(thousandths % 1000)
-    return string.format("%02d:%02d.%d", mm, ss, ms)
+    
+    if hh > 0 then
+        return string.format("%02d:%02d:%02d.%03d", hh, mm, ss, ms)
+    else
+        return string.format("%02d:%02d.%03d", mm, ss, ms)
+    end
 end
 
 local function clientRaceboardData(data)
@@ -99,12 +93,9 @@ local function clientRaceboardData(data)
 
     for id,player in pairs(data) do
         if not player['position'] then
-            data[id] = nil -- ignore anyone without a position
+            data[id] = nil
         end
     end
-
-    -- Sort by player['position']
-
     if #data > 1 then
         local function sortPlayers(k1,k2)
             if k1 and k2 then
@@ -117,29 +108,9 @@ local function clientRaceboardData(data)
         end
         table.sort(data, sortPlayers)
     end
-    --local function sortPlayers(k1,k2) return tonumber(k1['position']) < tonumber(k2['position']) end
-    --table.sort(data, sortPlayers)
 
     for _,player in pairs(data) do
-        --[[
-        local lastLap   = #player
-        if lastLap == 0 or not player[lastLap] then
-            goto continue
-        end
-        if next(player[lastLap]) == nil then
-            lastLap = lastLap - 1 -- accounting for initialized laps
-        end
-
-        local lastSplit = tableLength(player[lastLap])
-        if player[lastLap]['lapTime'] then
-            player['lastTime'] = prettyTime(player[lastLap]['lapTime'])
-        else
-            player['lastTime'] = prettyTime(player[lastLap][lastSplit]['lapSplit'])
-        end
-        ]]
         local position = tonumber(player['position'])
-        --log('D', logTag, "player['position'] : " .. player['position'])
-        --log('D', logTag, "type(position) : " .. type(position))
         statisitcs[position] = player
         ::continue::
     end
@@ -148,41 +119,193 @@ local function clientRaceboardData(data)
     end
 end
 
-local function drawRaceboard()
-    gui.setupWindow(raceName)
-    im.Begin(raceName)
-    for _,player in pairs(statisitcs) do
-        if player['position'] then
-            --im.Text(player['position'] .. ": " .. player['name'] .. ": " .. player['lastTime'])
-            im.Text(player['position'] .. ": " .. player['name'])
-            im.Separator()
+local function checkCheckBox()
+    local result = {}
+    for key, value in pairs(checkboxes) do
+        if value then
+            table.insert(result, key .. " = TRUE")
+        else
+            table.insert(result, key .. " = FALSE")
         end
     end
+    return checkboxes
+end
+
+local function SetPerem(data)
+    dump(data)
+    FuelNow = data.HowManyLitersSum
+    FuelPer = data.HowManyLiters
+end
+
+local function FuelRet()
+    return tonumber(sensor)
+end
+
+local function FuelRet2()
+    local data = jsonEncode({FuelNow = FuelNow, FuelPer = tonumber(sensor), FuelPerN = FuelPer})
+    return data
+end
+
+local function clearCheckBox()
+    checkboxes = {
+        body  = true,
+        fuel  = true,
+        tires = true,
+    }
+    sensor = 100
+end
+
+local function drawUI()
+    gui.setupWindow("Пит-стоп")
+    imgui.Begin("Пит-стоп")
+
+    if imgui.Checkbox("Кузов", imgui.BoolPtr(checkboxes.body)) then
+        checkboxes.body = not checkboxes.body
+    end
+
+    if imgui.Checkbox("Шины", imgui.BoolPtr(checkboxes.tires)) then
+        checkboxes.tires = not checkboxes.tires
+    end
+
+    if imgui.Checkbox("Топливо", imgui.BoolPtr(checkboxes.fuel)) then
+        checkboxes.fuel = not checkboxes.fuel
+    end
+
+    local uiVal = imgui.IntPtr(sensor)
+    imgui.PushStyleVar1(imgui.StyleVar_GrabMinSize, 20)
+    imgui.PushItemWidth(140)
+    imgui.SliderInt("%", uiVal, FuelPer, 100,"%d%% бака")
+    imgui.tooltip('Percent of fuel in pit-stop')
+    imgui.PopItemWidth()
+    imgui.PopStyleVar()
+    sensor = uiVal[0]
+
+
+    imgui.End()
 end
 
 local function onUpdate(dt)
-    if worldReadyState == 2 then
-        if windowOpen[0] == true then
-            --do return end
-            drawRaceboard()
-        end
+end
+
+local function sortPlayers(player1, player2)
+    if player1.position == 0 then
+        return false
+    elseif player2.position == 0 then
+        return true
+    else
+        return (player1.position or math.huge) < (player2.position or math.huge)
     end
 end
 
+local function sortPlayersFast(player1, player2)
+    if player1.fastLapTime and player2.fastLapTime then
+        return player1.fastLapTime < player2.fastLapTime
+    elseif player1.fastLapTime then
+        return true
+    elseif player2.fastLapTime then
+        return false
+    else
+        return false
+    end
+end
+
+local function sortPlayersTeam(teamData1, teamData2)
+    
+    if teamData1.totalLapCount and teamData2.totalLapCount then
+        return teamData1.totalLapCount > teamData2.totalLapCount
+    elseif teamData1.totalLapCount then
+        return true
+    elseif teamData2.totalLapCount then
+        return false
+    else
+        return false
+    end
+end
+
+local function handleRaceDataUpdate(raceDataJson)
+    local raceData = jsonDecode(raceDataJson)
+    local raceDataByFastLap = {}
+
+    for key, value in pairs(raceData) do
+        raceDataByFastLap[key] = value
+    end
+    
+    -- Сортируем игроков по позициям
+    table.sort(raceData, sortPlayers)
+    table.sort(raceDataByFastLap, sortPlayersFast)
+
+    -- Логирование для проверки
+    -- for _, player in ipairs(raceData) do
+    --     print("Игрок: " .. player.name .. " | Позиция: " .. (player.position or "N/A") .. " | Круги: " .. (player.lapCount or 0))
+    -- end
+    for _, player in ipairs(raceDataByFastLap) do
+        if player.fastLapTime and player.fastLapTime >= 3600 then
+            player.fastLapTime = "--:--.---"
+        else
+            player.fastLapTime = prettyTime(player.fastLapTime or 3600)
+        end
+    end
+
+    for _, player in ipairs(raceData) do
+        if player.lastLapTime and player.lastLapTime >= 3600 then
+            player.lastLapTime = "--:--.---"
+        else
+            player.lastLapTime = prettyTime(player.lastLapTime or 3600)
+        end
+    end
+
+
+    sortedRaceDataFastJson = jsonEncode(raceDataByFastLap)
+    if sortedRaceDataFastJson then
+        guihooks.trigger("updateRaceboardFast", sortedRaceDataFastJson)
+    end
+    
+    sortedRaceDataJson = jsonEncode(raceData)
+    if sortedRaceDataJson then
+        guihooks.trigger("updateRaceboard", sortedRaceDataJson)
+    end
+
+
+    -- drawUI()
+
+end
+
+AddEventHandler("updateRaceData", handleRaceDataUpdate)
+
+local function handleTeamDataUpdate(teamDataJson)
+    local teamData = jsonDecode(teamDataJson)
+
+    table.sort(teamData, sortPlayersTeam)
+
+    -- Логирование для проверки
+    -- for _, team in ipairs(teamData) do
+    --     print("Команда: " .. team.teamName .. " | Суммарные круги: " .. (team.totalLapCount or 0) .. " | Суммарные сплиты: " .. (team.totalSplits or 0))
+    -- end
+    sortedTeamDataJson = jsonEncode(teamData)
+    if sortedTeamDataJson then
+        guihooks.trigger("updateTeamBoard", sortedTeamDataJson)
+    end
+end
+
+AddEventHandler("updateTeamData", handleTeamDataUpdate)
+
 local function onWorldReadyState()
-    local data = jsonEncode( {} )
-    TriggerServerEvent("clientRaceboardReady", data)
 end
 
 local function onExtensionLoaded()
     gui_module.initialize(gui)
-    gui.registerWindow(raceName, im.ImVec2(512, 256))
-    gui.showWindow(raceName)
-    log('I', logTag, "Raceboard Loaded")
+    gui.registerWindow(pitstop, imgui.ImVec2(80, 80))
+    gui.showWindow(pitstop)
+    log('I', logTag, "GUI Loaded")
 end
 
 local function onExtensionUnloaded()
-    log('I', logTag, "Raceboard Unloaded")
+    log('I', logTag, "GUI Unloaded")
+end
+
+local function kostilGui()
+    guihooks.trigger("updateRaceboard", sortedRaceDataJson)
+    guihooks.trigger("updateRaceboardFast", sortedRaceDataFastJson)
 end
 
 AddEventHandler("clientRaceboardData", clientRaceboardData)
@@ -192,5 +315,12 @@ M.onUpdate = onUpdate
 M.onWorldReadyState = onWorldReadyState
 M.onExtensionLoaded = onExtensionLoaded
 M.onExtensionUnloaded = onExtensionUnloaded
+M.drawUI = drawUI
+M.FuelRet2 = FuelRet2
+M.FuelRet = FuelRet
+M.clearCheckBox = clearCheckBox
+M.kostilGui = kostilGui
+M.SetPerem = SetPerem
+M.checkCheckBox = checkCheckBox
 
 return M

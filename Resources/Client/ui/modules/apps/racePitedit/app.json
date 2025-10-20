@@ -1,0 +1,17 @@
+{
+  "domElement": "<racePitedit></racePitedit>",
+  "name": "_RACE Редакция пит-стопа",
+  "types": [
+    "ui.apps.categories.racetime"
+  ],
+  "css": {
+    "right": "0px",
+    "top": "40px",
+    "width": "250px",
+    "height": "250px"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racePitedit"
+}

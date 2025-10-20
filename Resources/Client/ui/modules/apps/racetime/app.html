@@ -1,0 +1,38 @@
+<div ng-controller="BalanceInit" id="BalanceInit">
+    <div style="position: absolute; left: 50px; top: 0px; width: 92px; height: 12px; transform: skew(-45deg);"
+    ng-style="{'background-color': flagStatus1}">
+        <div style="position: absolute; left: 90px; top: 0px; width: 92px; height: 12px;"
+        ng-style="{'background-color': flagStatus2}">
+            <div style="position: absolute; left: 90px; top: 0px; width: 92px; height: 12px;"
+            ng-style="{'background-color': flagStatus3}">
+                <div style="position: absolute; left: 90px; top: 0px; width: 92px; height: 12px;"
+                ng-style="{'background-color': flagStatus4}">
+                    <div style="position: absolute; left: 90px; top: 0px; width: 92px; height: 12px;"
+                    ng-style="{'background-color': flagStatus5}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="width: 500px; height: 165px; position: relative; font-family: 'Consolas', monospace; font-weight: 500; background-image: url('/ui/modules/apps/racetime/background.png'); background-size: cover;">
+        <div style="position: absolute; left: 180px;transform: translateX(-50%); top: 13px; font-size: 38px; color: #ffffff;">
+            <span>{{ balances.balance6 }}</span>
+        </div>
+        <div style="position: absolute; left: 50px; top: 76px; font-size: 20px; color: rgb(255, 255, 255);width: 320px;">
+            <span>LAST:</span>
+        <div style="position: absolute; left: 160px; top: -5px;transform: translateX(-50%); font-size: 28px; color: rgb(0, 0, 0);">
+            <span>{{ balances.balance2 }}</span>
+        </div>
+        </div>
+        <div style="position: absolute; left: 50px; top: 127px; font-size: 20px; color: rgb(255, 255, 255);width: 500px;">
+            <span>BEST:</span>
+            <div style="position: absolute; left: 160px; top: -3px;transform: translateX(-50%); font-size: 28px; color: rgb(0, 0, 0);">
+                <span>{{ balances.balance3 }}</span>
+            </div>
+        </div>
+        <div style="position: absolute; left: 422px; top: 23px; transform: translateX(-50%); font-size: 22px; color: rgb(0, 0, 0);">
+            <span>{{ balances.balance8 }}</span>
+        </div>
+    </div>
+</div>

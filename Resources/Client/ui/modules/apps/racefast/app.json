@@ -1,0 +1,20 @@
+{
+  "domElement": "<racefast></racefast>",
+  "name": "_RACE Быстрейший круг",
+  "types": [
+    "ui.apps.categories.racetime"
+  ],
+  "css": {
+    "left": "50%",
+    "top": "40px",
+    "min-width": "230px",
+    "width": "230px",
+    "height": "220px",
+    "resize": "both",
+    "overflow": "hidden"
+  },
+  "description": "Интерфейс для гонки",
+  "author": "BeamNGRP",
+  "version": "0.1",
+  "directive": "racefast"
+}

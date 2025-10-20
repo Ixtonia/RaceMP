@@ -1,0 +1,24 @@
+<div ng-controller="Raceboardfast" id="Raceboardfast">
+
+    <div style="position: absolute; top:0px; left: 0px; width: 35px; height: 24px; background-color: #921717; opacity: 1; ">
+    </div>
+    <div style="position: absolute; top:0px; left: 12px; width: 168px; height: 24px; background-color: #921717; opacity: 1; transform: skew(45deg);">
+            </div>
+    <div style="position: absolute; top:0px; left: 15px; width: 160px; height: 24px; background-color: #181615; opacity: 1; transform: skew(45deg);">
+            </div>
+    <div style="position: absolute; top:0px; left: 3px; width: 135px; height: 24px; background-color: #181615; opacity: 1;font-family: 'Consolas', monospace; font-weight: 500;color: #ffffff; ">
+        <div style="position: absolute; top:2px; left: 3px;width: 180px;">Быстрейший круг</div>
+    </div>
+    <div style="width: 350px; height: 320px; position: relative; font-family: 'Consolas', monospace; font-weight: 500;">
+        <div ng-repeat="player in raceData" style="position: absolute; top: 24px; left: 0px; font-size: 18px; color: #c5c5c5;">
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 0px; width: 105px; height: 23px; background-color: #181615; opacity: 0.8;"></div>
+            <div style="position: absolute;top: {{ $index * 26 }}px; left: 105px; width: 120px; height: 23px; background-color: #c5c5c5;opacity: 1;"></div>
+            <div style="position: absolute; top: {{ $index * 26 }}px;transform: translateX(-50%); left: 52px; color: rgb(255, 255, 255);">
+                {{ player.name.length > 8 ? player.name.substring(0, 8) + '..' : player.name }}
+            </div>
+            <div style="position: absolute; top: {{ $index * 26 }}px; width: 120px; left: 123px; color: rgb(0, 0, 0);">
+                <strong>{{ player.fastLapTime }}</strong>
+            </div>  
+        
+    </div>
+</div>
